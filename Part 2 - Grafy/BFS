@@ -1,0 +1,86 @@
+from collections import deque
+
+'''
+BFS
+- najkrotsze sciezki z danego wierzcholka
+- spojnosc
+- wykrywanie cykli
+- testowanie dwuspojnosc (dwudzielnosc) grafu
+'''
+#Zlozonosc
+# listowa O(V+E)
+# macierzowa O(V^2)
+
+#adjacecny list
+def BFS_l (G,s):
+    n=len(G)
+    Q=deque()
+    d=[-1 for i in range(n)]
+    visited=[False for i in range(n)]
+    parent=[None for i in range (n)]
+
+    d[s]=0
+    visited[s]=True
+    Q.append(s)
+
+    while len(Q)>0:
+        u=Q.popleft()
+
+        for v in G[u]:
+            if not visited[v]:
+                visited[v]=True
+                d[v]=d[u]+1
+                parent[v]=u
+                Q.append(v)
+    return d
+
+G1=[ [1],
+    [2,3],
+    [5],
+    [4,6],
+    [5],
+    [6],
+    [7],
+    [8],
+    []
+    ]
+res1=BFS_l(G1,0)
+print(res1)
+
+#adjacecny matrix
+def BFS_m(G,s):
+    n = len(G)
+    Q = deque()
+    d = [-1 for i in range(n)]
+    visited = [False for i in range(n)]
+    parent = [None for i in range(n)]
+
+    d[s] = 0
+    visited[s] = True
+    Q.append(s)
+
+    while len(Q)>0:
+        u=Q.popleft()
+
+        for v in range (n):
+            if G[u][v] == 1 and not visited [v]:
+                    visited[v] = True
+                    d[v] = d[u] + 1
+                    parent[v] = u
+                    Q.append(v)
+    return d
+G2 = [
+    [0,1,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,0,0,0],
+    [0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,1,0,1,0,0],
+    [0,0,0,0,0,1,0,0,0],
+    [0,0,0,0,0,0,1,0,0],
+    [0,0,0,0,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0,1],
+    [0,0,0,0,0,0,0,0,0]
+    ]
+
+res2=BFS_m(G2,0)
+print(res2)
+
