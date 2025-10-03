@@ -1,0 +1,33 @@
+def cyklEulera (G):
+    n=len(G)
+    cykl=[]
+
+    for i in range(n): #sprawdzamy czy cykl w ogole istnieje
+        edges = 0
+        for j in range(n):
+            if (G[i][j] == 1): edges += 1
+        if edges % 2 == 1: return None
+
+
+    def EulerVisit(G,u):
+        for i in range(n):
+            if G[u][i]==1:
+                G[u][i]=0
+                G[i][u]=0
+                EulerVisit(G,i)
+                cykl.append(u)
+
+    EulerVisit(G,0)
+    cykl.reverse()
+    cykl.append(0)
+    return cykl
+
+G=[
+    [0,1,0,0,0,1],
+    [1,0,1,0,1,1],
+    [0,1,0,0,1,0],
+    [0,0,0,0,1,1],
+    [0,1,1,1,0,1],
+    [1,1,0,1,1,0]
+]
+print(cyklEulera(G))
