@@ -1,0 +1,65 @@
+# 1. Wykonaj DFS zapamiętując czasy przetworzenia wierzchołków.
+# 2. Odwróć kierunek krawędzi.
+# 3. Wykonaj DFS ponownie, w kolejności malejących czasów przetwarzania z pierwszego DFS.
+
+def silnie_sp_sk(G):
+
+    def DFS1(G):
+        n = len(G)
+        visited = [False for i in range(n)]
+        times = [None for i in range(n)]
+        time = 0
+
+        def DFSVisit(G, u):
+            nonlocal time
+            time += 1
+            visited[u] = True
+            for v in range(n):
+                if G[u][v] == 1 and not visited[v]:
+                    DFSVisit(G, v)
+            time+=1
+            times[u]= (time,u)
+
+        for u in range(n):
+            if not visited[u]:
+                DFSVisit(G, u)
+        return times
+
+    def DFS2(G, times):
+        res = []
+        n = len(G)
+        visited = [False] * n
+
+        def DFS2Visit(G, u, tmp):
+            visited[u] = True
+            for v in range(n):
+                if G[v][u] > 0 and not visited[v]:
+                    tmp.append(v)
+                    DFS2Visit(G, v, tmp)
+
+            return tmp
+
+        for t in times:
+            if not visited[t[1]]:
+                tmp = [t[1]]
+                res.append(DFS2Visit(G, t[1], tmp))
+
+        return res
+
+
+    times = DFS1(G)
+    times.sort(reverse=True)
+    return DFS2(G, times)
+
+
+G = [
+    [0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0],
+    [1, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 0]
+]
+print(*silnie_sp_sk(G), sep="\n")
+
