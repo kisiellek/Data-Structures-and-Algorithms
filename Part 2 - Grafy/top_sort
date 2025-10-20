@@ -1,0 +1,30 @@
+def sortowanie_topologiczne (G):
+    n=len(G)
+    visited=[False for i in range (n)]
+    t=[None for i in range(n)]
+    k=n-1
+    def DFSVisit(G,u):
+        nonlocal k
+        visited[u]=True
+        for v in G[u]:
+            if not visited[v]:
+                DFSVisit(G,v)
+        t[k]=u
+        k-=1
+
+    for u in range(n):
+        if not visited[u]:
+            DFSVisit(G,u)
+    return t
+
+G=[
+    [1,2,5],
+    [2,4],
+    [],
+    [],
+    [3,6],
+    [4],
+    []
+]
+
+print(sortowanie_topologiczne(G))
